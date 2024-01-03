@@ -1,4 +1,4 @@
-package com.example.notificationbox.view.main
+package com.karakoca.notificationbox.view.main
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.notificationbox.model.local.Screen
-import com.example.notificationbox.view.home.HomeScreen
+import com.karakoca.notificationbox.model.local.Screen
+import com.karakoca.notificationbox.view.home.HomeScreen
 
 @Composable
 fun MainNavController() {

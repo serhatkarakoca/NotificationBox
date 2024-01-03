@@ -1,4 +1,4 @@
-package com.example.notificationbox.ui.theme
+package com.karakoca.notificationbox.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

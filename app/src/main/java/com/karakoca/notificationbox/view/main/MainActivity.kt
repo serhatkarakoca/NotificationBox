@@ -1,4 +1,4 @@
-package com.example.notificationbox.view.main
+package com.karakoca.notificationbox.view.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,16 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.notificationbox.ui.theme.NotificationBoxTheme
-import com.example.notificationbox.view.main.MainNavController
+import com.karakoca.notificationbox.ui.theme.NotificationBoxTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             NotificationBoxTheme {
                 // A surface container using the 'background' color from the theme

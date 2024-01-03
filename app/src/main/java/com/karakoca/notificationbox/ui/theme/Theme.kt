@@ -1,4 +1,4 @@
-package com.example.notificationbox.ui.theme
+package com.karakoca.notificationbox.ui.theme
 
 import android.app.Activity
 import android.os.Build

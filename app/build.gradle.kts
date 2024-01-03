@@ -1,14 +1,21 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization") version "1.9.21"
+    id("com.google.devtools.ksp")
+    id("androidx.room")
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 android {
-    namespace = "com.example.notificationbox"
+    namespace = "com.karakoca.notificationbox"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.notificationbox"
+        applicationId = "com.karakoca.notificationbox"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -51,6 +58,7 @@ android {
 
 dependencies {
     val nav_version = "2.7.6"
+    val room_version = "2.6.1"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -67,7 +75,17 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
 }
