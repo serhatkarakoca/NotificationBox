@@ -6,4 +6,6 @@
     <string name="channel_description">test_description</string>
     <string name="service_name">Notification Service</string>
     <string name="preference_file_key">notification_box_pref</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
 </resources>

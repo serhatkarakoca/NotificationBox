@@ -34,7 +34,7 @@ class MyNotificationListener : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val mNotification = sbn.notification
-        if (mNotification != null) {
+        if (mNotification != null && sbn.key.contains("null").not()) {
             val intent = Intent(INTENT_ACTION_NOTIFICATION)
             var image: Bitmap? = null
             var appIcon: Bitmap? = null
@@ -43,7 +43,8 @@ class MyNotificationListener : NotificationListenerService() {
             val notificationTitle = extras?.getString(Notification.EXTRA_TITLE)
             val notificationText = extras?.getCharSequence(Notification.EXTRA_TEXT)
             val notificationSubText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT)
-
+            intent.putExtra("AnyNew", true)
+            sendBroadcast(intent)
 
             // bildirimdeki resim
             try {
@@ -78,7 +79,7 @@ class MyNotificationListener : NotificationListenerService() {
 
             scope.launch {
                 val lastNotification = dao?.getNotifications()?.lastOrNull()
-                if (sbn.notification.`when` != lastNotification?.`when`)
+                if (sbn.notification.`when` != lastNotification?.`when` && notificationText != null && notificationTitle != null)
                     dao?.insertNotification(
                         NotificationModel(
                             title = notificationTitle, text = notificationText.toString(),
@@ -89,8 +90,6 @@ class MyNotificationListener : NotificationListenerService() {
                             packageName = sbn.packageName
                         )
                     )
-
-                Log.d("test", lastNotification?.id.toString())
             }
 
         }

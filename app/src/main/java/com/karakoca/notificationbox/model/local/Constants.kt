@@ -3,6 +3,8 @@ package com.karakoca.notificationbox.model.local
 object Constants {
     const val CHANNEL_ID = "TEST_NOTIFY"
     const val INTENT_ACTION_NOTIFICATION = "com.karakoca.notification"
+    const val TODAY = "today"
+    const val YESTERDAY = "yesterday"
 
     /***
      * Xiaomi
