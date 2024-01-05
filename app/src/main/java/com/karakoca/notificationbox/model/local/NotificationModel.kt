@@ -17,9 +17,8 @@ data class NotificationModel(
     val text: String?,
     val icon: String?,
     val `when`: Long,
-    val date: String?,
+    var date: String?,
     val messageImage: String?,
     val packageName: String?,
-    var expanded: Boolean = false,
     val color: Int = randomLocalColor().toArgb()
 )

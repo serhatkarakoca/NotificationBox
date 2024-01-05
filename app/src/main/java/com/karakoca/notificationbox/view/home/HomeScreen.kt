@@ -2,6 +2,7 @@ package com.karakoca.notificationbox.view.home
 
 import android.content.Intent
 import android.os.Build
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.karakoca.notificationbox.model.local.Constants
-import com.karakoca.notificationbox.model.local.room.NotificationDatabase
 import com.karakoca.notificationbox.util.AutoStartSetting
 import com.karakoca.notificationbox.util.NotificationUtils
 import com.karakoca.notificationbox.util.SystemBroadcastReceiver
@@ -39,16 +40,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val context = LocalContext.current
     val status =
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
 
     val notifications =
-        NotificationDatabase.getDatabase(context).notificationDao().getNotificationsFlow()
-            .collectAsState(
-                initial = null
-            )
+        viewModel.notifications.collectAsState(initial = null).value
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -94,7 +92,12 @@ fun HomeScreen() {
 
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (newData)
+        AnimatedVisibility(
+            visible = newData, modifier = Modifier
+                .padding(55.dp)
+                .align(Alignment.TopCenter)
+                .zIndex(10f)
+        ) {
             Button(
                 onClick = {
                     coroutineScope.launch {
@@ -102,13 +105,12 @@ fun HomeScreen() {
                         newData = false
                     }
 
-                }, modifier = Modifier
-                    .padding(55.dp)
-                    .align(Alignment.TopCenter)
-                    .zIndex(10f)
+                }
             ) {
                 Text(text = "New Notifications")
             }
+        }
+
 
         Column {
 
@@ -136,7 +138,7 @@ fun HomeScreen() {
                     .fillMaxWidth(),
                 state = listState
             ) {
-                items(items = notifications.value ?: emptyList(), key = { it?.id!! }) {
+                items(items = notifications ?: emptyList(), key = { it?.id!! }) {
                     it?.let {
                         NotificationItem(item = it)
                     }

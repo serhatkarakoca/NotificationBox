@@ -8,6 +8,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         PrefUtil.initSharedPrefs(this)
-        NotificationDatabase.getDatabase(this)
+        NotificationDatabase.initDatabase(this)
     }
 }

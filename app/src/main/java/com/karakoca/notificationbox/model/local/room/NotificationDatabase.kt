@@ -18,16 +18,17 @@ abstract class NotificationDatabase : RoomDatabase() {
         @Volatile
         private var instance: NotificationDatabase? = null
         private val lock = Any()
-        fun getDatabase(context: Context): NotificationDatabase {
 
-            return instance ?: synchronized(lock) {
-                instance ?: Room.databaseBuilder(
-                    context,
-                    NotificationDatabase::class.java,
-                    "notification_database"
-                ).fallbackToDestructiveMigration().build().also { instance = it }
-            }
+        fun initDatabase(context: Context) {
+            Room.databaseBuilder(
+                context,
+                NotificationDatabase::class.java,
+                "notification_database"
+            ).fallbackToDestructiveMigration().build().also { instance = it }
+        }
 
+        fun getDatabase(): NotificationDatabase {
+            return instance ?: throw NullPointerException("Database must be initialized")
         }
     }
 }

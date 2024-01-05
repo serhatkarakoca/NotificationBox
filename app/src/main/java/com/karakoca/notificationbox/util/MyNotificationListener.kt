@@ -9,7 +9,6 @@ import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
-import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import com.karakoca.notificationbox.model.local.Constants.INTENT_ACTION_NOTIFICATION
 import com.karakoca.notificationbox.model.local.NotificationModel
@@ -28,7 +27,8 @@ class MyNotificationListener : NotificationListenerService() {
     private var dao: NotificationDao? = null
 
     override fun onBind(intent: Intent?): IBinder? {
-        dao = NotificationDatabase.getDatabase(this).notificationDao()
+        NotificationDatabase.initDatabase(this)
+        dao = NotificationDatabase.getDatabase().notificationDao()
         return super.onBind(intent)
     }
 
@@ -96,7 +96,7 @@ class MyNotificationListener : NotificationListenerService() {
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        Toast.makeText(this, "Lan niye sildin", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onDestroy() {

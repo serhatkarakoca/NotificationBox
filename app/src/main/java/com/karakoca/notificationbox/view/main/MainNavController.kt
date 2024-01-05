@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.karakoca.notificationbox.model.local.Screen
 import com.karakoca.notificationbox.view.home.HomeScreen
+import com.karakoca.notificationbox.view.onboarding.OnBoardingScreen
 
 @Composable
 fun MainNavController() {
@@ -23,6 +24,10 @@ fun MainNavController() {
         ) {
             composable(route = Screen.HomeScreen.route) {
                 HomeScreen()
+            }
+
+            composable(route = Screen.OnBoardingScreen.route) {
+                OnBoardingScreen()
             }
         }
     }

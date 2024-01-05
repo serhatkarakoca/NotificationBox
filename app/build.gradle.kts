@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -6,11 +9,27 @@ plugins {
     id("androidx.room")
 }
 
+val keystorePropertiesFile = rootProject.file("gradle.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+val keystoreProperties = Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 room {
     schemaDirectory("$projectDir/schemas")
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["RELEASE_KEY_ALIAS"] as String
+            keyPassword = keystoreProperties["RELEASE_KEY_PASSWORD"] as String
+            storeFile = file(keystoreProperties["RELEASE_STORE_FILE"] as String)
+            storePassword = keystoreProperties["RELEASE_STORE_PASSWORD"] as String
+        }
+    }
     namespace = "com.karakoca.notificationbox"
     compileSdk = 34
 
@@ -29,11 +48,13 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
