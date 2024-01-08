@@ -12,7 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.karakoca.notificationbox.R
-import com.karakoca.notificationbox.model.local.Constants.CHANNEL_ID
+import com.karakoca.notificationbox.data.model.Constants.CHANNEL_ID
 import com.karakoca.notificationbox.view.main.MainActivity
 import java.util.UUID
 

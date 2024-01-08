@@ -1,10 +1,10 @@
-package com.karakoca.notificationbox.model.local.room
+package com.karakoca.notificationbox.data.local.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.karakoca.notificationbox.model.local.NotificationModel
+import com.karakoca.notificationbox.data.model.NotificationModel
 
 @Database(
     entities = [NotificationModel::class],

@@ -1,4 +1,4 @@
-package com.karakoca.notificationbox.model.local
+package com.karakoca.notificationbox.data.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.toArgb

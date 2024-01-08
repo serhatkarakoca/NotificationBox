@@ -1,13 +1,11 @@
 package com.karakoca.notificationbox
 
 import android.app.Application
-import com.karakoca.notificationbox.model.local.room.NotificationDatabase
-import com.karakoca.notificationbox.util.PrefUtil
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        PrefUtil.initSharedPrefs(this)
-        NotificationDatabase.initDatabase(this)
     }
 }

@@ -1,4 +1,4 @@
-package com.karakoca.notificationbox.model
+package com.karakoca.notificationbox.data.model
 
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.toArgb

@@ -1,4 +1,4 @@
-package com.karakoca.notificationbox.model.local
+package com.karakoca.notificationbox.data.model
 
 sealed class Screen(val route: String) {
     data object HomeScreen : Screen("homeScreen")

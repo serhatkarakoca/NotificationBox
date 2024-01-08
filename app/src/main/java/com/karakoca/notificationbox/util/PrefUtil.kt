@@ -3,7 +3,7 @@ package com.karakoca.notificationbox.util
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.karakoca.notificationbox.model.local.NotificationModel
+import com.karakoca.notificationbox.data.model.NotificationModel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -15,8 +15,9 @@ class PrefUtil {
         private lateinit var prefs: SharedPreferences
         private val json = Json { encodeDefaults = true }
 
-        fun initSharedPrefs(context: Context) {
+        fun initSharedPrefs(context: Context): SharedPreferences {
             prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            return prefs
         }
 
         fun setTutorialPassed() {

@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.karakoca.notificationbox.model.local.Constants
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.karakoca.notificationbox.data.model.Constants
 import com.karakoca.notificationbox.util.AutoStartSetting
 import com.karakoca.notificationbox.util.NotificationUtils
 import com.karakoca.notificationbox.util.SystemBroadcastReceiver
@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val status =
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)

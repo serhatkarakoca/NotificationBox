@@ -7,6 +7,8 @@ plugins {
     kotlin("plugin.serialization") version "1.9.21"
     id("com.google.devtools.ksp")
     id("androidx.room")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 val keystorePropertiesFile = rootProject.file("gradle.properties")
@@ -77,6 +79,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     val nav_version = "2.7.6"
     val room_version = "2.6.1"
@@ -102,11 +108,16 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
+    // Room
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
-
     ksp("androidx.room:room-compiler:$room_version")
-
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
 }

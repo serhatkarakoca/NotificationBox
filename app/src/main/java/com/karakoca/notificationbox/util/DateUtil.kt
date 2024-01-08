@@ -1,7 +1,7 @@
 package com.karakoca.notificationbox.util
 
-import com.karakoca.notificationbox.model.local.Constants.TODAY
-import com.karakoca.notificationbox.model.local.Constants.YESTERDAY
+import com.karakoca.notificationbox.data.model.Constants.TODAY
+import com.karakoca.notificationbox.data.model.Constants.YESTERDAY
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

@@ -44,9 +44,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.karakoca.notificationbox.R
-import com.karakoca.notificationbox.model.NotificationUI
-import com.karakoca.notificationbox.model.local.Constants.TODAY
-import com.karakoca.notificationbox.model.local.Constants.YESTERDAY
+import com.karakoca.notificationbox.data.model.Constants.TODAY
+import com.karakoca.notificationbox.data.model.Constants.YESTERDAY
+import com.karakoca.notificationbox.data.model.NotificationUI
 import com.karakoca.notificationbox.util.getDateString
 
 

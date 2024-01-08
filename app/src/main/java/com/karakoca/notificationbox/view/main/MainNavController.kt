@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.karakoca.notificationbox.model.local.Screen
+import com.karakoca.notificationbox.data.model.Screen
 import com.karakoca.notificationbox.view.home.HomeScreen
 import com.karakoca.notificationbox.view.onboarding.OnBoardingScreen
 

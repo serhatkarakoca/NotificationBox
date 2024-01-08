@@ -5,36 +5,33 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
-import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
-import com.karakoca.notificationbox.model.local.Constants.INTENT_ACTION_NOTIFICATION
-import com.karakoca.notificationbox.model.local.NotificationModel
-import com.karakoca.notificationbox.model.local.room.NotificationDao
-import com.karakoca.notificationbox.model.local.room.NotificationDatabase
+import com.karakoca.notificationbox.data.model.Constants.INTENT_ACTION_NOTIFICATION
+import com.karakoca.notificationbox.data.model.NotificationModel
+import com.karakoca.notificationbox.data.repository.NotificationRepository
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class MyNotificationListener : NotificationListenerService() {
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
-    private var dao: NotificationDao? = null
 
-    override fun onBind(intent: Intent?): IBinder? {
-        NotificationDatabase.initDatabase(this)
-        dao = NotificationDatabase.getDatabase().notificationDao()
-        return super.onBind(intent)
-    }
+    @Inject
+    lateinit var repo: NotificationRepository
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val mNotification = sbn.notification
-        if (mNotification != null && sbn.key.contains("null").not()) {
+        if (mNotification != null) {
             val intent = Intent(INTENT_ACTION_NOTIFICATION)
             var image: Bitmap? = null
             var appIcon: Bitmap? = null
@@ -78,9 +75,9 @@ class MyNotificationListener : NotificationListenerService() {
             }
 
             scope.launch {
-                val lastNotification = dao?.getNotifications()?.lastOrNull()
+                val lastNotification = repo.getNotifications()?.lastOrNull()
                 if (sbn.notification.`when` != lastNotification?.`when` && notificationText != null && notificationTitle != null)
-                    dao?.insertNotification(
+                    repo.insertNotification(
                         NotificationModel(
                             title = notificationTitle, text = notificationText.toString(),
                             icon = if (appIcon != null) convertToBase64(appIcon) else null,

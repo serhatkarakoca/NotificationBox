@@ -1,4 +1,4 @@
-package com.karakoca.notificationbox.model.local
+package com.karakoca.notificationbox.data.model
 
 object Constants {
     const val CHANNEL_ID = "TEST_NOTIFY"

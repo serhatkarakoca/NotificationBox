@@ -1,7 +1,7 @@
 package com.karakoca.notificationbox.util
 
-import com.karakoca.notificationbox.model.NotificationUI
-import com.karakoca.notificationbox.model.local.NotificationModel
+import com.karakoca.notificationbox.data.model.NotificationModel
+import com.karakoca.notificationbox.data.model.NotificationUI
 
 fun NotificationModel.toNotificationUI(): NotificationUI {
     val icon = icon?.let { convertBase64ToBitmap(it) }

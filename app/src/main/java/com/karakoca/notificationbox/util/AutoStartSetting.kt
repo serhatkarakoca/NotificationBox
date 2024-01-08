@@ -3,24 +3,24 @@ package com.karakoca.notificationbox.util
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.karakoca.notificationbox.model.local.Constants.BRAND_HONOR
-import com.karakoca.notificationbox.model.local.Constants.BRAND_OPPO
-import com.karakoca.notificationbox.model.local.Constants.BRAND_VIVO
-import com.karakoca.notificationbox.model.local.Constants.BRAND_XIAOMI
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_HONOR_COMPONENT
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_HONOR_MAIN
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_OPPO_COMPONENT
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_OPPO_COMPONENT_FALLBACK
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_OPPO_COMPONENT_FALLBACK_A
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_OPPO_FALLBACK
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_OPPO_MAIN
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_VIVO_COMPONENT
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_VIVO_COMPONENT_FALLBACK
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_VIVO_COMPONENT_FALLBACK_A
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_VIVO_FALLBACK
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_VIVO_MAIN
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_XIAOMI_COMPONENT
-import com.karakoca.notificationbox.model.local.Constants.PACKAGE_XIAOMI_MAIN
+import com.karakoca.notificationbox.data.model.Constants.BRAND_HONOR
+import com.karakoca.notificationbox.data.model.Constants.BRAND_OPPO
+import com.karakoca.notificationbox.data.model.Constants.BRAND_VIVO
+import com.karakoca.notificationbox.data.model.Constants.BRAND_XIAOMI
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_HONOR_COMPONENT
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_HONOR_MAIN
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_OPPO_COMPONENT
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_OPPO_COMPONENT_FALLBACK
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_OPPO_COMPONENT_FALLBACK_A
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_OPPO_FALLBACK
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_OPPO_MAIN
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_VIVO_COMPONENT
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_VIVO_COMPONENT_FALLBACK
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_VIVO_COMPONENT_FALLBACK_A
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_VIVO_FALLBACK
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_VIVO_MAIN
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_XIAOMI_COMPONENT
+import com.karakoca.notificationbox.data.model.Constants.PACKAGE_XIAOMI_MAIN
 
 
 class AutoStartSetting {

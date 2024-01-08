@@ -1,9 +1,9 @@
-package com.karakoca.notificationbox.model.local.room
+package com.karakoca.notificationbox.data.local.room
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.karakoca.notificationbox.model.local.NotificationModel
+import com.karakoca.notificationbox.data.model.NotificationModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,4 +17,9 @@ interface NotificationDao {
     @Query("SELECT * FROM notification")
     fun getNotificationsFlow(): Flow<List<NotificationModel?>?>
 
+    @Query("DELETE FROM notification WHERE id = :id")
+    fun removeNotification(id: Int)
+
+    @Query("DELETE FROM notification")
+    fun removeAllNotifications()
 }
