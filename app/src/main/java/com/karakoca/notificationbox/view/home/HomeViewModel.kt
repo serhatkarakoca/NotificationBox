@@ -14,24 +14,46 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repo: NotificationRepository) : ViewModel() {
-    private val _notifications = MutableSharedFlow<List<NotificationUI?>>()
-    val notifications: SharedFlow<List<NotificationUI?>>
+    private val _notifications = MutableSharedFlow<List<List<NotificationUI?>>>()
+    val notifications: SharedFlow<List<List<NotificationUI?>>>
         get() = _notifications
 
     init {
-        getNotifications()
+        handleEvent(HomeEvent.GetNotifications)
     }
 
-    private fun getNotifications() {
+    private suspend fun getNotifications() {
+        repo.getNotificationsFlow()
+            .map {
+                it?.map { it?.toNotificationUI() }
+            }
+            .collect {
+                val finalValues = it?.reversed()?.groupBy { it?.title }?.values
+                _notifications.emit(finalValues?.toList() ?: emptyList())
+            }
+    }
+
+    private suspend fun deleteAllNotifications() {
+        repo.removeAllNotifications()
+    }
+
+    fun handleEvent(event: HomeEvent) {
         viewModelScope.launch {
-            repo.getNotificationsFlow()
-                .map {
-                    it?.map { it?.toNotificationUI() }
-                }
-                .collect {
-                    _notifications.emit(it?.reversed() ?: emptyList())
+            when (event) {
+                is HomeEvent.GetNotifications -> {
+                    getNotifications()
                 }
 
+                is HomeEvent.DeleteAllNotifications -> {
+                    deleteAllNotifications()
+                }
+            }
         }
+
     }
+}
+
+sealed interface HomeEvent {
+    data object GetNotifications : HomeEvent
+    data object DeleteAllNotifications : HomeEvent
 }

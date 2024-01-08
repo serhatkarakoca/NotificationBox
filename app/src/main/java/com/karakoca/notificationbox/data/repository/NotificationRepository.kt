@@ -7,6 +7,6 @@ interface NotificationRepository {
     suspend fun insertNotification(notificationModel: NotificationModel)
     fun getNotifications(): List<NotificationModel?>?
     fun getNotificationsFlow(): Flow<List<NotificationModel?>?>
-    fun removeNotification(id: Int)
-    fun removeAllNotifications()
+    suspend fun removeNotification(id: Int)
+    suspend fun removeAllNotifications()
 }

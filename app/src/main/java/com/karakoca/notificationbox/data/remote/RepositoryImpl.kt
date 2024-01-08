@@ -18,11 +18,11 @@ class RepositoryImpl(private val dao: NotificationDao) : NotificationRepository 
         return dao.getNotificationsFlow()
     }
 
-    override fun removeNotification(id: Int) {
+    override suspend fun removeNotification(id: Int) {
         dao.removeNotification(id)
     }
 
-    override fun removeAllNotifications() {
+    override suspend fun removeAllNotifications() {
         dao.removeAllNotifications()
     }
 }

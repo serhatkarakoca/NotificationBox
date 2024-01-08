@@ -18,8 +18,8 @@ interface NotificationDao {
     fun getNotificationsFlow(): Flow<List<NotificationModel?>?>
 
     @Query("DELETE FROM notification WHERE id = :id")
-    fun removeNotification(id: Int)
+    suspend fun removeNotification(id: Int)
 
     @Query("DELETE FROM notification")
-    fun removeAllNotifications()
+    suspend fun removeAllNotifications()
 }

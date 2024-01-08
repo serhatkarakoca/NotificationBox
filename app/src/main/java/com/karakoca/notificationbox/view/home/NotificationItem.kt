@@ -51,7 +51,7 @@ import com.karakoca.notificationbox.util.getDateString
 
 
 @Composable
-fun NotificationItem(item: NotificationUI) {
+fun NotificationItem(item: NotificationUI, size: String) {
     var date = remember {
         getDateString(item.`when`)
     }
@@ -101,7 +101,7 @@ fun NotificationItem(item: NotificationUI) {
                             .background(Color.Transparent)
                     ) {
                         Text(
-                            text = "2",
+                            text = size,
                             Modifier.align(Alignment.Center),
                             color = color,
                             fontSize = 24.sp

@@ -114,6 +114,18 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
         Column {
 
+
+            Text(text = "Delete All Notifications", modifier = Modifier
+                .padding(24.dp)
+                .clickable {
+                    /*
+                val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+                startActivity(context, intent, null)
+
+                 */
+                    viewModel.handleEvent(HomeEvent.DeleteAllNotifications)
+                })
+
             Text(text = "Home Screen", modifier = Modifier.clickable {
                 /*
                 val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
@@ -138,9 +150,11 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                     .fillMaxWidth(),
                 state = listState
             ) {
-                items(items = notifications ?: emptyList(), key = { it?.id!! }) {
-                    it?.let {
-                        NotificationItem(item = it)
+                items(items = notifications ?: emptyList()) {
+                    it?.let { itemList ->
+                        itemList.firstOrNull()?.let {
+                            NotificationItem(item = it, size = itemList.size.toString())
+                        }
                     }
                 }
             }

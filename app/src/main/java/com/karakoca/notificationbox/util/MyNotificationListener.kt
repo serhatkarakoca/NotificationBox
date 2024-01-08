@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 
@@ -31,15 +32,19 @@ class MyNotificationListener : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val mNotification = sbn.notification
-        if (mNotification != null) {
+
+        if (mNotification != null && sbn.tag != null) {
             val intent = Intent(INTENT_ACTION_NOTIFICATION)
             var image: Bitmap? = null
             var appIcon: Bitmap? = null
             val extras = mNotification.extras
 
-            val notificationTitle = extras?.getString(Notification.EXTRA_TITLE)
-            val notificationText = extras?.getCharSequence(Notification.EXTRA_TEXT)
+            val notificationTitle = extras?.getString(Notification.EXTRA_TITLE, null)?.toString()
+            val notificationText = extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString()
             val notificationSubText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT)
+            val textLines = extras?.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)
+            if (textLines.isNullOrEmpty())
+                println(notificationTitle)
             intent.putExtra("AnyNew", true)
             sendBroadcast(intent)
 
@@ -76,7 +81,9 @@ class MyNotificationListener : NotificationListenerService() {
 
             scope.launch {
                 val lastNotification = repo.getNotifications()?.lastOrNull()
-                if (sbn.notification.`when` != lastNotification?.`when` && notificationText != null && notificationTitle != null)
+                val isNewNotification =
+                    Calendar.getInstance().timeInMillis - sbn.notification.`when` < 1000
+                if (sbn.notification.`when` != lastNotification?.`when` && notificationText != null && notificationTitle != null && textLines.isNullOrEmpty() && isNewNotification)
                     repo.insertNotification(
                         NotificationModel(
                             title = notificationTitle, text = notificationText.toString(),

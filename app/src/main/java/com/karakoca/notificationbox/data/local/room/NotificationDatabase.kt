@@ -1,8 +1,6 @@
 package com.karakoca.notificationbox.data.local.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.karakoca.notificationbox.data.model.NotificationModel
 
@@ -13,6 +11,7 @@ import com.karakoca.notificationbox.data.model.NotificationModel
 abstract class NotificationDatabase : RoomDatabase() {
     abstract fun notificationDao(): NotificationDao
 
+    /*
     companion object {
 
         @Volatile
@@ -31,4 +30,6 @@ abstract class NotificationDatabase : RoomDatabase() {
             return instance ?: throw NullPointerException("Database must be initialized")
         }
     }
+
+     */
 }
