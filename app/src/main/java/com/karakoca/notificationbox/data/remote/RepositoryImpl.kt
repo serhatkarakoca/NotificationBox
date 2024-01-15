@@ -4,8 +4,12 @@ import com.karakoca.notificationbox.data.local.room.NotificationDao
 import com.karakoca.notificationbox.data.model.NotificationModel
 import com.karakoca.notificationbox.data.repository.NotificationRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RepositoryImpl(private val dao: NotificationDao) : NotificationRepository {
+@Singleton
+class RepositoryImpl @Inject constructor(private val dao: NotificationDao) :
+    NotificationRepository {
     override suspend fun insertNotification(notificationModel: NotificationModel) {
         dao.insertNotification(notificationModel)
     }
@@ -24,5 +28,9 @@ class RepositoryImpl(private val dao: NotificationDao) : NotificationRepository 
 
     override suspend fun removeAllNotifications() {
         dao.removeAllNotifications()
+    }
+
+    override suspend fun removeNotificationsByTitle(title: String) {
+        dao.removeNotificationsByTitle(title)
     }
 }

@@ -22,4 +22,7 @@ interface NotificationDao {
 
     @Query("DELETE FROM notification")
     suspend fun removeAllNotifications()
+
+    @Query("DELETE FROM notification where title = :title")
+    suspend fun removeNotificationsByTitle(title: String)
 }

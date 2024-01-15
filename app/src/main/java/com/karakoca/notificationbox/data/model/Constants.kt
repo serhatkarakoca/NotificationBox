@@ -6,6 +6,11 @@ object Constants {
     const val TODAY = "today"
     const val YESTERDAY = "yesterday"
 
+    /**
+     * Navigation Keys
+     */
+    const val NOTIFICATION_ITEM = "notificationItem"
+
     /***
      * Xiaomi
      */

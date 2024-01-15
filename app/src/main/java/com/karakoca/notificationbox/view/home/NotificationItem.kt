@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,11 +48,12 @@ import com.karakoca.notificationbox.R
 import com.karakoca.notificationbox.data.model.Constants.TODAY
 import com.karakoca.notificationbox.data.model.Constants.YESTERDAY
 import com.karakoca.notificationbox.data.model.NotificationUI
+import com.karakoca.notificationbox.ui.theme.HexColor
 import com.karakoca.notificationbox.util.getDateString
 
 
 @Composable
-fun NotificationItem(item: NotificationUI, size: String) {
+fun NotificationItem(item: NotificationUI, size: String, clickListener: (String) -> Unit) {
     var date = remember {
         getDateString(item.`when`)
     }
@@ -74,8 +76,10 @@ fun NotificationItem(item: NotificationUI, size: String) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp)
-                .clickable { expanded.value = !expanded.value },
+                .height(160.dp)
+                .clickable {
+                    clickListener.invoke(item.title ?: return@clickable)
+                },
             colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
@@ -104,15 +108,16 @@ fun NotificationItem(item: NotificationUI, size: String) {
                             text = size,
                             Modifier.align(Alignment.Center),
                             color = color,
-                            fontSize = 24.sp
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Light
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    Text(text = date)
+                    Text(text = date, fontSize = 14.sp)
                     Text(
                         text = item.date?.substringAfter(" ") ?: "",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                        fontSize = 14.sp
                     )
                 }
 
@@ -123,13 +128,16 @@ fun NotificationItem(item: NotificationUI, size: String) {
                 )
 
                 Column(modifier = Modifier.padding(8.dp)) {
-                    Row {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         item.icon?.asImageBitmap()?.let {
                             Image(
                                 bitmap = it,
                                 contentDescription = "icon",
                                 modifier = Modifier
-                                    .size(25.dp)
+                                    .size(16.dp)
                                     .clip(
                                         CircleShape
                                     )
@@ -139,17 +147,30 @@ fun NotificationItem(item: NotificationUI, size: String) {
                         Text(
                             text = item.title ?: "",
                             modifier = Modifier.padding(horizontal = 8.dp),
-                            color = color
+                            color = color,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp
                         )
                     }
 
                     Text(
                         text = item.text ?: "",
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 24.dp),
+                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
                         color = Color.Black,
-                        fontWeight = FontWeight.Bold,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 14.sp
                     )
+
+                    item.messageImage?.asImageBitmap()?.let {
+                        Image(
+                            bitmap = it,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clip(RectangleShape)
+                                .clickable { imageExpanded = true }
+                        )
+                    }
                 }
             }
         }
@@ -187,7 +208,7 @@ fun NotificationItem(item: NotificationUI, size: String) {
                 Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color(0xFFFAFAFA))
+                    .background(HexColor)
                     .padding(8.dp)
 
             ) {

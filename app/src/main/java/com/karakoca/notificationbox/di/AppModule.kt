@@ -3,9 +3,8 @@ package com.karakoca.notificationbox.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.google.gson.Gson
 import com.karakoca.notificationbox.data.local.room.NotificationDatabase
-import com.karakoca.notificationbox.data.remote.RepositoryImpl
-import com.karakoca.notificationbox.data.repository.NotificationRepository
 import com.karakoca.notificationbox.util.PrefUtil
 import dagger.Module
 import dagger.Provides
@@ -33,8 +32,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(database: NotificationDatabase): NotificationRepository {
-        return RepositoryImpl(database.notificationDao())
-    }
+    fun provideDao(db: NotificationDatabase) = db.notificationDao()
+
+
+    @Provides
+    @Singleton
+    fun gson() = Gson()
 
 }

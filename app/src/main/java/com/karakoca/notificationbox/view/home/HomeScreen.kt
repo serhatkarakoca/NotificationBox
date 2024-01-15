@@ -12,12 +12,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,7 +34,9 @@ import androidx.compose.ui.zIndex
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.karakoca.notificationbox.data.model.Constants
+import com.karakoca.notificationbox.data.model.NotificationUI
 import com.karakoca.notificationbox.util.AutoStartSetting
 import com.karakoca.notificationbox.util.NotificationUtils
 import com.karakoca.notificationbox.util.SystemBroadcastReceiver
@@ -40,18 +45,23 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    navigateToDetails: (List<NotificationUI?>) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val status =
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
 
-    val notifications =
-        viewModel.notifications.collectAsState(initial = null).value
+    val notifications: List<List<NotificationUI?>> =
+        viewModel.notifications.collectAsStateWithLifecycle(emptyList()).value
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
     var newData by remember { mutableStateOf(false) }
+
+    val visibleItemIndex = remember { derivedStateOf { listState.firstVisibleItemIndex } }
 
     val manufacturer = Constants.brandList.firstOrNull {
         it.lowercase().equals(Build.MANUFACTURER, ignoreCase = true)
@@ -86,7 +96,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 val extras = intent.extras
                 val updateData = extras?.getBoolean("AnyNew")
                 if (updateData == true)
-                    newData = true
+                    newData = visibleItemIndex.value > 1
             }
         })
 
@@ -107,6 +117,11 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
                 }
             ) {
+                Icon(
+                    modifier = Modifier.padding(end = 2.dp),
+                    imageVector = Icons.Default.KeyboardArrowUp,
+                    contentDescription = null
+                )
                 Text(text = "New Notifications")
             }
         }
@@ -146,19 +161,27 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
             LazyColumn(
                 Modifier
-                    .padding(24.dp)
+                    .padding(vertical = 24.dp, horizontal = 16.dp)
                     .fillMaxWidth(),
                 state = listState
             ) {
                 items(items = notifications ?: emptyList()) {
-                    it?.let { itemList ->
-                        itemList.firstOrNull()?.let {
-                            NotificationItem(item = it, size = itemList.size.toString())
+                    it.let { itemList ->
+                        itemList.lastOrNull()?.let {
+                            NotificationItem(
+                                item = it,
+                                size = itemList.size.toString(),
+                                clickListener = { title ->
+                                    val list =
+                                        notifications.firstOrNull { it.firstOrNull { it?.title == title } != null }
+                                            ?: emptyList()
+
+                                    navigateToDetails.invoke(list)
+                                })
                         }
                     }
                 }
             }
-
         }
     }
 }

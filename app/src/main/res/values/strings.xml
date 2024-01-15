@@ -8,4 +8,6 @@
     <string name="preference_file_key">notification_box_pref</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="are_u_sure_delete">Are you sure you want to delete the conversation?</string>
+    <string name="delete">Delete</string>
 </resources>

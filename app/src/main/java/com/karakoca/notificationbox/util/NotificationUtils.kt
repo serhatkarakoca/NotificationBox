@@ -49,7 +49,7 @@ class NotificationUtils {
                 ) {
                     return
                 }
-                notify(UUID.randomUUID().hashCode(), builder.build())
+                notify("tag", UUID.randomUUID().hashCode(), builder.build())
             }
         }
 

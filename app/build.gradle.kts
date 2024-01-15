@@ -9,6 +9,7 @@ plugins {
     id("androidx.room")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 val keystorePropertiesFile = rootProject.file("gradle.properties")
@@ -104,10 +105,13 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // Room
     implementation("androidx.room:room-runtime:$room_version")

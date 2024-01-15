@@ -6,16 +6,16 @@ import com.karakoca.notificationbox.data.model.NotificationUI
 import com.karakoca.notificationbox.data.repository.NotificationRepository
 import com.karakoca.notificationbox.util.toNotificationUI
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repo: NotificationRepository) : ViewModel() {
-    private val _notifications = MutableSharedFlow<List<List<NotificationUI?>>>()
-    val notifications: SharedFlow<List<List<NotificationUI?>>>
+    private val _notifications = MutableStateFlow<List<List<NotificationUI?>>>(emptyList())
+    val notifications: StateFlow<List<List<NotificationUI?>>>
         get() = _notifications
 
     init {
@@ -28,7 +28,9 @@ class HomeViewModel @Inject constructor(private val repo: NotificationRepository
                 it?.map { it?.toNotificationUI() }
             }
             .collect {
-                val finalValues = it?.reversed()?.groupBy { it?.title }?.values
+                val finalValues =
+                    it?.groupBy { it?.title }?.values?.sortedBy { it.lastOrNull()?.`when` }
+                        ?.reversed()
                 _notifications.emit(finalValues?.toList() ?: emptyList())
             }
     }
