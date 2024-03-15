@@ -32,8 +32,7 @@ class MyNotificationListener : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val mNotification = sbn.notification
-
-        if (mNotification != null && sbn.tag != null) {
+        if (mNotification != null) {
             val intent = Intent(INTENT_ACTION_NOTIFICATION)
             var image: Bitmap? = null
             var appIcon: Bitmap? = null
@@ -43,6 +42,7 @@ class MyNotificationListener : NotificationListenerService() {
             val notificationText = extras?.getCharSequence(Notification.EXTRA_TEXT)?.toString()
             val notificationSubText = extras?.getCharSequence(Notification.EXTRA_SUB_TEXT)
             val textLines = extras?.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)
+            val bigText = extras?.getCharSequenceArray(Notification.EXTRA_BIG_TEXT)
             if (textLines.isNullOrEmpty())
                 println(notificationTitle)
             intent.putExtra("AnyNew", true)
@@ -83,10 +83,12 @@ class MyNotificationListener : NotificationListenerService() {
                 val lastNotification = repo.getNotifications()?.lastOrNull()
                 val isNewNotification =
                     Calendar.getInstance().timeInMillis - sbn.notification.`when` < 1000
-                if (sbn.notification.`when` != lastNotification?.`when` && notificationText != null && notificationTitle != null && textLines.isNullOrEmpty() && isNewNotification)
+                if (sbn.notification.`when` != lastNotification?.`when` && notificationTitle != null && textLines.isNullOrEmpty() && isNewNotification && (notificationText != null || bigText != null || notificationSubText != null))
                     repo.insertNotification(
                         NotificationModel(
-                            title = notificationTitle, text = notificationText.toString(),
+                            title = notificationTitle,
+                            text = notificationText ?: bigText?.toString()
+                            ?: notificationSubText?.toString() ?: "",
                             icon = if (appIcon != null) convertToBase64(appIcon) else null,
                             messageImage = if (image != null) convertToBase64(image) else null,
                             `when` = sbn.notification.`when`,

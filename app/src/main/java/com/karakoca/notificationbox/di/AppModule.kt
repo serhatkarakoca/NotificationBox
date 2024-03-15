@@ -1,7 +1,6 @@
 package com.karakoca.notificationbox.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
 import com.karakoca.notificationbox.data.local.room.NotificationDatabase
@@ -19,8 +18,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePrefUtil(@ApplicationContext context: Context): SharedPreferences =
-        PrefUtil.initSharedPrefs(context)
+    fun providePrefUtil(@ApplicationContext context: Context): PrefUtil {
+        return PrefUtil(context)
+    }
 
     @Provides
     @Singleton

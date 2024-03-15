@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,11 +24,12 @@ fun MainNavController() {
 
     val navController = rememberNavController()
     val gson = Gson()
+    val viewModel: MainViewModel = hiltViewModel()
 
     Scaffold {
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = if (viewModel.getTutorialPassed()) Screen.HomeScreen.route else Screen.OnBoardingScreen.route,
             modifier = Modifier.padding(it)
         ) {
             composable(route = Screen.HomeScreen.route) {
@@ -41,7 +43,15 @@ fun MainNavController() {
             }
 
             composable(route = Screen.OnBoardingScreen.route) {
-                OnBoardingScreen()
+                OnBoardingScreen(navigateToHome = {
+                    viewModel.setTutorial()
+                    navController.navigate(Screen.HomeScreen.route) {
+                        popUpTo(Screen.HomeScreen.route) {
+                            inclusive = true
+                            saveState = true
+                        }
+                    }
+                })
             }
 
             composable(route = Screen.NotificationDetails.route + "?$NOTIFICATION_ITEM={$NOTIFICATION_ITEM}",

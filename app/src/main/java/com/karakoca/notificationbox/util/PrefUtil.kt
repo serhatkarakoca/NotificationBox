@@ -7,26 +7,21 @@ import com.karakoca.notificationbox.data.model.NotificationModel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class PrefUtil {
-    companion object {
-        private const val NOTIFICATION_DATA = "NOTIFICATION_DATA"
-        private const val TUTORIAL_PASSED = "TUTORIAL_PASSED"
+class PrefUtil(context: Context) {
 
-        private lateinit var prefs: SharedPreferences
-        private val json = Json { encodeDefaults = true }
+    private val NOTIFICATION_DATA = "NOTIFICATION_DATA"
+    private val TUTORIAL_PASSED = "TUTORIAL_PASSED"
 
-        fun initSharedPrefs(context: Context): SharedPreferences {
-            prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            return prefs
-        }
+    private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val json = Json { encodeDefaults = true }
 
-        fun setTutorialPassed() {
-            prefs.edit().putBoolean(TUTORIAL_PASSED, true).apply()
-        }
+    fun setTutorialPassed() {
+        prefs.edit().putBoolean(TUTORIAL_PASSED, true).apply()
+    }
 
-        fun getTutorialPassed(): Boolean {
-            return prefs.getBoolean(TUTORIAL_PASSED, false)
-        }
+    fun getTutorialPassed(): Boolean {
+        return prefs.getBoolean(TUTORIAL_PASSED, false)
+    }
 
         fun setNotification(notification: NotificationModel) {
             val newList = arrayListOf<NotificationModel>()
@@ -42,5 +37,5 @@ class PrefUtil {
             return json.decodeFromString<List<NotificationModel>>(data)
         }
 
-    }
+
 }

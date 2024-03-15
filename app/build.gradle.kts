@@ -112,6 +112,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("androidx.compose.ui:ui-util:1.5.4")
 
     // Room
     implementation("androidx.room:room-runtime:$room_version")

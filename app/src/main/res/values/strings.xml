@@ -10,4 +10,12 @@
     <string name="yesterday">Yesterday</string>
     <string name="are_u_sure_delete">Are you sure you want to delete the conversation?</string>
     <string name="delete">Delete</string>
+    <string name="new_notifications">New Notifications</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="enable_auto_start">Enable Auto Start</string>
+    <string name="sort_by">Sort By</string>
+    <string name="newest_first">Newest First</string>
+    <string name="oldest_first">Oldest First</string>
+    <string name="enable_notification_permission">Enable Notification Permission</string>
 </resources>

@@ -1,11 +1,12 @@
 package com.karakoca.notificationbox.view.home
 
-import android.content.Intent
-import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,10 +15,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -28,30 +31,25 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.karakoca.notificationbox.R
 import com.karakoca.notificationbox.data.model.Constants
 import com.karakoca.notificationbox.data.model.NotificationUI
-import com.karakoca.notificationbox.util.AutoStartSetting
-import com.karakoca.notificationbox.util.NotificationUtils
 import com.karakoca.notificationbox.util.SystemBroadcastReceiver
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navigateToDetails: (List<NotificationUI?>) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-    val status =
-        NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
 
     val notifications: List<List<NotificationUI?>> =
         viewModel.notifications.collectAsStateWithLifecycle(emptyList()).value
@@ -62,31 +60,9 @@ fun HomeScreen(
     var newData by remember { mutableStateOf(false) }
 
     val visibleItemIndex = remember { derivedStateOf { listState.firstVisibleItemIndex } }
-
-    val manufacturer = Constants.brandList.firstOrNull {
-        it.lowercase().equals(Build.MANUFACTURER, ignoreCase = true)
-    }
-
-    val dialogState = remember { mutableStateOf(false) }
-
-    /*
-    LaunchedEffect(key1 = Unit, block = {
-        if (manufacturer != null)
-            dialogState.value = true
-    })
-
-     */
-
-
-    if (dialogState.value && manufacturer != null) {
-        AlertDialog(onDismissRequest = { dialogState.value = false }, confirmButton = {
-            Button(onClick = {
-                dialogState.value = false
-                AutoStartSetting.startAutoStartDialog(context, manufacturer)
-            }) {
-                Text(text = "kapat")
-            }
-        })
+    val filterVisible = remember { mutableStateOf(false) }
+    val sortNewest = remember {
+        mutableStateOf(true)
     }
 
     SystemBroadcastReceiver(
@@ -122,41 +98,101 @@ fun HomeScreen(
                     imageVector = Icons.Default.KeyboardArrowUp,
                     contentDescription = null
                 )
-                Text(text = "New Notifications")
+                Text(text = stringResource(id = R.string.new_notifications))
             }
         }
 
 
-        Column {
+        Column(Modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.primary)
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+
+            ) {
+
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    modifier = Modifier,
+                    color = MaterialTheme.colorScheme.surface
+                )
+
+                Icon(
+                    imageVector = Icons.Default.List,
+                    contentDescription = "back",
+                    modifier = Modifier.clickable {
+                        filterVisible.value = !filterVisible.value
+                    },
+                    tint = MaterialTheme.colorScheme.surface
+                )
+            }
+            AnimatedVisibility(
+                visible = filterVisible.value,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.primary)
+            ) {
+                Column {
+
+                    Text(
+                        text = stringResource(R.string.sort_by),
+                        color = MaterialTheme.colorScheme.surface,
+                        modifier = Modifier.padding(start = 16.dp),
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable {
+                            sortNewest.value = true
+                        }
+                    ) {
+                        RadioButton(
+                            selected = sortNewest.value,
+                            onClick = {
+                                sortNewest.value = true
+                            },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = Color.White,
+                                unselectedColor = Color.White
+                            )
+                        )
+                        Text(
+                            text = stringResource(R.string.newest_first),
+                            color = MaterialTheme.colorScheme.surface,
+                            fontSize = 12.sp
+                        )
+                        Row(
+                            modifier = Modifier
+                                .padding(start = 16.dp)
+                                .clickable {
+                                    sortNewest.value = false
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = !sortNewest.value,
+                                onClick = {
+                                    sortNewest.value = false
+                                },
+                                colors = RadioButtonDefaults.colors(
+                                    selectedColor = Color.White,
+                                    unselectedColor = Color.White
+                                )
+                            )
+                            Text(
+                                text = stringResource(R.string.oldest_first),
+                                color = MaterialTheme.colorScheme.surface,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
 
 
-            Text(text = "Delete All Notifications", modifier = Modifier
-                .padding(24.dp)
-                .clickable {
-                    /*
-                val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
-                startActivity(context, intent, null)
+                }
 
-                 */
-                    viewModel.handleEvent(HomeEvent.DeleteAllNotifications)
-                })
-
-            Text(text = "Home Screen", modifier = Modifier.clickable {
-                /*
-                val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
-                startActivity(context, intent, null)
-
-                 */
-
-                NotificationUtils.createTestNotification(context)
-            })
-
-
-            Text(text = "Enable Notification Permission", Modifier.clickable {
-                val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
-                startActivity(context, intent, null)
-            })
-
+            }
 
 
             LazyColumn(
@@ -165,7 +201,7 @@ fun HomeScreen(
                     .fillMaxWidth(),
                 state = listState
             ) {
-                items(items = notifications ?: emptyList()) {
+                items(items = notifications) {
                     it.let { itemList ->
                         itemList.lastOrNull()?.let {
                             NotificationItem(
